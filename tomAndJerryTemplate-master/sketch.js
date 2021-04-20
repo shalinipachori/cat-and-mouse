@@ -1,32 +1,42 @@
-var catImg,mouseImg,gardenImg;
+var catStanding, catSitting, catWalking;
+var mouseStanding, mouseWithCheese, mouseWalking;
+var gardenImg;
+
 function preload() {
-  catImg=loadAnimation("images/cat1.png","images/cat2.png","images/cat3.png","images/cat4.png");
+  catSitting=loadAnimation("images/cat1.png");
+  catWalking = loadAnimation("images/cat2.png","images/cat3.png");
+  catStanding = loadAnimation("images/cat4.png");
+  mouseWithCheese = loadAnimation("images/mouse1.png");
+  mouseWalking = loadAnimation("images/mouse2.png","images/mouse3.png");
+  mouseStanding = loadAnimation("images/mouse4.png");
   gardenImg=loadImage("images/garden.png");
-  mouseImg=loadAnimation("images/mouse1.png","images/mouse2.png","images/mouse3.png","images/mouse4.png");
 }
 
 function setup(){
     createCanvas(1000,800);
+
     cat=createSprite(850,600);
-    cat.addAnimation(catImg);
-    mouse=createSprite(750,600);
-    mouse.addAnimation(mouseImg);
+    cat.addAnimation("catSitting", catSitting);
+    cat.addAnimation("catWalking", catWalking);
+    cat.addAnimation("catStanding", catStanding);    
+    cat.scale = 0.15;
+
+    mouse=createSprite(250,600);
+    mouse.addAnimation("mouseWithCheese", mouseWithCheese);
+    mouse.addAnimation("mouseWalking", mouseWalking);
+    mouse.addAnimation("mouseStanding", mouseStanding);    
+    mouse.scale = 0.1;
 }
 
 function draw() {
-
     background(gardenImg);
     
-    if(cat.x - mouse.x < (cat.width - mouse.width)/2)
-    { 
+    if((cat.x - mouse.x) <= (cat.width - mouse.width)/2) { 
       cat.velocityX=0;
-      cat.addAnimation("catLastImage", catImg3);
-      cat.x =300;
-      cat.scale=0.2;
-      cat.changeAnimation("catLastImage");
-      mouse.addAnimation("mouseLastImage", mouseImg3);
-      mouse.scale=0.15;
-      mouse.changeAnimation("mouseLastImage");
+      cat.changeAnimation("catStanding", catStanding);
+      cat.x = 300;
+      
+      mouse.changeAnimation("mouseStanding", mouseStanding);
     }  
 
     drawSprites();
@@ -34,15 +44,9 @@ function draw() {
 
 
 function keyPressed(){
-
   if(keyCode === LEFT_ARROW){
     cat.velocityX = -5; 
-    cat.addAnimation("catRunning", catImg2);
-    cat.changeAnimation("catRunning");
-    
-    mouse.addAnimation("mouse", mouseImg2);
-    mouse.changeAnimation("mouse");
+    cat.changeAnimation("catWalking", catWalking);    
+    mouse.changeAnimation("mouseWalking", mouseWalking);
   }
-
-
 }
